@@ -1,0 +1,19 @@
+{
+  "name": "best-tracker-vendor",
+  "private": true,
+  "description": "Builds vendor.js (Anthropic SDK + ZXing barcode reader) for the B.E.S.T. web app.",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "build": "npm run check && esbuild entry.ts --bundle --minify --format=iife --global-name=BESTVendor --target=safari15 --legal-comments=eof --outfile=../../vendor.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "1.12.0",
+    "@zxing/browser": "0.2.1",
+    "@zxing/library": "0.23.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "typescript": "5.9.3"
+  }
+}

@@ -2,3 +2,4 @@
 *.zip
 *.json.bak
 .claude/
+node_modules/

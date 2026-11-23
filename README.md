@@ -10,14 +10,19 @@ A simple, iPhone-first web app for strength workouts, food, Peloton/cardio rides
 - Track logged-weight and estimated one-rep-max PRs.
 - Use 30- or 90-second rest timers with a two-strike ringing bell and vibration when supported.
 - Manually record Peloton/cardio duration, distance, output, calories, and notes.
-- Log food by meal with calories and optional protein, on any date; reuse recent foods with one tap; set daily calorie and protein goals. The Today screen shows the day's totals.
+- Log food by meal with calories, protein, carbs, and fat, on any date; reuse recent foods with one tap; set daily goals. The Today screen shows the day's totals.
+- Search foods in the USDA FoodData Central database (whole foods) and Open Food Facts (packaged foods), then choose an amount by portion, grams, or ounces.
+- Scan a product barcode with the camera (or type the number, or use a photo of it) to look it up in Open Food Facts.
+- Estimate calories and macros from a meal photo using Claude. This needs your own Anthropic API key, entered in Food → Settings; each photo is billed to your Anthropic account.
 - Save dated weight, waist, neck, and body-fat measurements.
 - Save dated progress photos on the device.
 - Export or restore a JSON backup containing workout history, food, rides, measurements, and photos.
 
 ## Cost and data
 
-All records are stored in the browser on the current device. Food calories and protein are entered by hand; there is no food database, photo calorie estimate, or sleep/HealthKit connection.
+All records are stored in the browser on the current device. There is no sleep/HealthKit connection.
+
+Food search, barcode lookups, and photo estimates contact outside services: USDA FoodData Central (`api.nal.usda.gov`), Open Food Facts (`world.openfoodfacts.org`), and Anthropic (`api.anthropic.com`). Search text and barcodes go to the first two; meal photos go to Anthropic only when you tap **Estimate**. USDA search uses the shared `DEMO_KEY` (about 30 searches an hour) unless you add a free key from api.data.gov. API keys are stored only on the device and are not included in backups. Photo estimates are approximations.
 
 Use **Backup** regularly and keep the downloaded JSON somewhere safe. The backup includes photos, so the file may be large. Browser storage does not automatically sync to another device.
 
@@ -38,3 +43,14 @@ Then open `http://localhost:8000` in a desktop browser. For iPhone installation 
 The app loads fresh files from the server whenever it's online and falls back to its offline copy otherwise, so a published update reaches the installed app the next time it's opened with a connection. If you add a new file the app needs offline, add it to `ASSETS` in `sw.js` and change the `CACHE` name.
 
 On iPhone, **Backup → Export** opens the share sheet; choose **Save to Files**.
+
+## Barcode scanner and photo estimates (vendor.js)
+
+`vendor.js` bundles the Anthropic TypeScript SDK and the ZXing barcode reader. The app loads it only when you first scan or estimate a photo. It is built from `tools/vendor/entry.ts`:
+
+```sh
+cd tools/vendor && npm install && npm run build
+```
+
+Commit the rebuilt `vendor.js` with any change to `entry.ts`.
+
