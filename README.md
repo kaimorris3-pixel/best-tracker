@@ -7,6 +7,7 @@ A simple, iPhone-first web app for strength workouts, food, Peloton/cardio rides
 - Log strength workouts by date and location (Home or Work).
 - Pick a preset routine for today from the Today screen; the selected routine opens in Strength. The pick applies to today only and does not change the weekly schedule.
 - Choose a workout split, preload the last logged sets, reps, and weight for each exercise, and add custom exercises.
+- Edit your own routines (create, rename, delete; add, remove, and reorder exercises with starting sets, reps, and weight) and set which routine runs on each day of the week, under **Strength → Weekly schedule / Routines**. Each phone keeps its own routines, and they are included in backups.
 - Track logged-weight and estimated one-rep-max PRs.
 - Use 30- or 90-second rest timers with a two-strike ringing bell and vibration when supported.
 - Manually record Peloton/cardio duration, distance, output, calories, and notes.
