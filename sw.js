@@ -1,5 +1,5 @@
 // Network first (so updates reach the installed app), falling back to the cache when offline or the network is slow.
-const CACHE="best-exercise-v3";
+const CACHE="best-exercise-v4";
 const ASSETS=["./","./index.html","./app.js","./manifest.json","./icon.svg","./icon-180.png","./icon-192.png","./icon-512.png"];
 const NETWORK_TIMEOUT=3000;
 self.addEventListener("install",event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting())));
