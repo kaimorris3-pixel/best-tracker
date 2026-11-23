@@ -107,9 +107,17 @@ function wireGoals(page){const mode=goalMode||data.foodGoals?.mode||"grams",val=
  page.querySelectorAll("[data-goal-mode]").forEach(b=>b.onclick=()=>{const next=b.dataset.goalMode;if(next===mode)return;const cal=val("goal-calories"),d={calories:cal||"",pct:{}};
   for(const [,k] of MACROS){if(next==="pct"){const grams=val("goal-"+k);d.pct[k]=grams&&cal?r1(grams*MACRO_KCAL[k]/cal*100):""}else{const p=val("goal-pct-"+k);d[k]=p&&cal?pctToGrams(cal,p,k):""}}
   goalMode=next;goalDraft=d;drawFood()});
- const hints=()=>{if(mode!=="pct")return;const cal=val("goal-calories");let sum=0;for(const [,k] of MACROS){const p=val("goal-pct-"+k);sum+=p;page.querySelector("#goal-hint-"+k).textContent=p&&cal?`= ${pctToGrams(cal,p,k)} g`:p?"Set calories to see grams":""}
+ const hints=()=>{if(mode!=="pct")return;const cal=val("goal-calories");let sum=0;for(const [,k] of MACROS){const p=val("goal-pct-"+k);sum+=p;const auto=page.querySelector("#goal-pct-"+k).classList.contains("auto")?" · auto":"";page.querySelector("#goal-hint-"+k).textContent=(p&&cal?`= ${pctToGrams(cal,p,k)} g`:p?"Set calories to see grams":"")+(p?auto:"")}
   const el=page.querySelector("#goal-pct-sum");el.textContent=sum?`Total ${r1(sum)}%${Math.abs(sum-100)>0.5?" · should add up to 100%":" ✓"}`:"";el.style.color=sum&&Math.abs(sum-100)>0.5?"var(--red)":""};
- page.querySelectorAll("#goal-calories,[id^=goal-pct-]").forEach(i=>i.addEventListener("input",hints));hints();
+ page.querySelector("#goal-calories").addEventListener("input",hints);
+ // The two most recently edited percentages set the third so the total is 100.
+ let recent=[];
+ for(const [,k] of MACROS){const inp=page.querySelector("#goal-pct-"+k);if(!inp)continue;inp.addEventListener("input",()=>{
+  recent=recent.filter(x=>x!==k);if(inp.value!=="")recent.unshift(k);recent=recent.slice(0,2);
+  for(const [,o] of MACROS)page.querySelector("#goal-pct-"+o).classList.remove("auto");
+  if(inp.value!==""&&recent.length===2){const other=MACROS.map(([,x])=>x).find(x=>!recent.includes(x)),el=page.querySelector("#goal-pct-"+other);el.value=r1(Math.max(0,100-recent.reduce((n,x)=>n+val("goal-pct-"+x),0)));el.classList.add("auto")}
+  hints()})}
+ hints();
  page.querySelector("#saveGoals").onclick=()=>{const calories=g0(val("goal-calories"));
   if(mode==="pct"){const pct=Object.fromEntries(MACROS.map(([,k])=>[k,r1(val("goal-pct-"+k))])),sum=pct.protein+pct.carbs+pct.fat;
    if(sum&&!calories)return alert("Enter a calorie goal so percentages can be turned into grams.");
