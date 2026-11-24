@@ -12,6 +12,7 @@ A simple, iPhone-first web app for strength workouts, food, Peloton/cardio rides
 - Use 30- or 90-second rest timers with a two-strike ringing bell and vibration when supported.
 - Manually record Peloton/cardio duration, distance, output, calories, and notes.
 - Log food by meal with calories, protein, carbs, and fat, on any date; reuse recent foods with one tap; set daily goals. The Today screen shows the day's totals.
+- Build recipes (ingredients plus the number of servings they make, with per-serving nutrition) and meals (foods and recipes eaten together) in the **Meals** tab, and log either to any day and meal in one step. Ingredients can come from database search, barcode scan, recent foods, or manual entry.
 - Search foods in the USDA FoodData Central database (whole foods) and Open Food Facts (packaged foods), then choose an amount by portion, grams, or ounces.
 - Scan a product barcode with the camera (or type the number, or use a photo of it) to look it up in Open Food Facts.
 - Estimate calories and macros from a meal photo using Claude. This needs your own Anthropic API key, entered in Food → Settings; each photo is billed to your Anthropic account.
